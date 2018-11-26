@@ -1,0 +1,28 @@
+package com.drools.example
+import javax.swing.JOptionPane
+import javax.swing.JFrame
+import org.kie.api.runtime.KieRuntime
+import javax.swing.JRadioButton
+import javax.swing.JPanel
+global JFrame frame
+global javax.swing.JTextArea textArea
+import java.util.ArrayList;
+rule "Init"
+	when
+	then
+    test(frame, kcontext.getKieRuntime(),"test");
+end
+
+
+
+function boolean test(JFrame frame, KieRuntime krt,String trescPytania) {
+        Object[] options = {"Yes",
+
+                            "No"};
+        JPanel panel = new JPanel();
+        panel.add(new JRadioButton("radio"));
+        JOptionPane.showOptionDialog(null, panel,
+            "Radio Test", JOptionPane.DEFAULT_OPTION,
+            JOptionPane.QUESTION_MESSAGE, null, null, null);
+        return true;
+}
