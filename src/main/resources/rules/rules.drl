@@ -6,23 +6,675 @@ import javax.swing.JRadioButton
 import javax.swing.JPanel
 global JFrame frame
 global javax.swing.JTextArea textArea
-import java.util.ArrayList;
-rule "Init"
+import java.util.ArrayList
+import java.util.List
+import java.util.Arrays;
+import java.util.ArrayList
+import javax.swing.JLabel;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+rule "Ask about Potter"
 	when
 	then
-    test(frame, kcontext.getKieRuntime(),"test");
+	ArrayList<String> warianty = new ArrayList<>();
+	warianty.add("Yes");
+	warianty.add("No");
+    Odpowiedz odpowiedz = zapytaj(frame, kcontext.getKieRuntime(),pytania(1),warianty);
+    insert (odpowiedz);
 end
 
+//Odpowiedz sprawdzona
+rule "Recommend Kingkiller"
+    when
+    Odpowiedz(pytanie == pytania(1) && odpowiedz == "Yes")
+    then
+    polec(frame, kcontext.getKieRuntime(),"Patrick Rothfuss","The Kingkiller Chronicles");
+end
 
+rule "Ask if new"
+when
+Odpowiedz(pytanie == pytania(1) && odpowiedz == "No")
+then
+     ArrayList<String> warianty = new ArrayList<>();
+ 	 warianty.add("Yes");
+ 	 warianty.add("Maybe");
+ 	 warianty.add("No");
+     Odpowiedz odpowiedz = zapytaj(frame, kcontext.getKieRuntime(),pytania(2),warianty);
+     insert (odpowiedz);
+end
 
-function boolean test(JFrame frame, KieRuntime krt,String trescPytania) {
-        Object[] options = {"Yes",
+rule "Ask if LotR"
+when
+Odpowiedz(pytanie == pytania(2) && odpowiedz == "Yes")
+then
+     ArrayList<String> warianty = new ArrayList<>();
+ 	 warianty.add("Yes");
+ 	 warianty.add("No");
+     Odpowiedz odpowiedz = zapytaj(frame, kcontext.getKieRuntime(),pytania(3),warianty);
+     insert (odpowiedz);
+end
+//Odpowiedz sprawdzona
+rule "Recommend Silmarilion"
+    when
+    Odpowiedz(pytanie == pytania(3) && odpowiedz == "Yes")
+    then
+    polec(frame, kcontext.getKieRuntime(),"J.R.R. Tolkien","The Silmarillion");
+end
+//Odpowiedz sprawdzona
+rule "Recommend LotR"
+    when
+    Odpowiedz(pytanie == pytania(3) && odpowiedz == "No")
+    then
+    polec(frame, kcontext.getKieRuntime(),"J.R.R. Tolkien","The Lord of the Rings");
+end
 
-                            "No"};
-        JPanel panel = new JPanel();
-        panel.add(new JRadioButton("radio"));
-        JOptionPane.showOptionDialog(null, panel,
-            "Radio Test", JOptionPane.DEFAULT_OPTION,
-            JOptionPane.QUESTION_MESSAGE, null, null, null);
-        return true;
+rule "Recommend Wicked"
+    when
+    Odpowiedz(pytanie == pytania(2) && odpowiedz == "Maybe")
+    then
+    polec(frame, kcontext.getKieRuntime(),"Gregory Maguire","Wicked");
+end
+
+rule "Ask if Arthurian"
+when
+Odpowiedz(pytanie == pytania(2) && odpowiedz == "No")
+then
+     ArrayList<String> warianty = new ArrayList<>();
+ 	 warianty.add("Yes");
+ 	 warianty.add("No");
+     Odpowiedz odpowiedz = zapytaj(frame, kcontext.getKieRuntime(),pytania(4),warianty);
+     insert (odpowiedz);
+end
+
+rule "Ask which Arthurian character"
+when
+Odpowiedz(pytanie == pytania(4) && odpowiedz == "Yes")
+then
+     ArrayList<String> warianty = new ArrayList<>();
+ 	 warianty.add("Arthur");
+ 	 warianty.add("Merlin");
+ 	 warianty.add("Morgan Le Faye");
+     Odpowiedz odpowiedz = zapytaj(frame, kcontext.getKieRuntime(),pytania(5),warianty);
+     insert (odpowiedz);
+end
+
+rule "Recommend The Once and Future King"
+    when
+    Odpowiedz(pytanie == pytania(5) && odpowiedz == "Arthur")
+    then
+    polec(frame, kcontext.getKieRuntime(),"T.H. White","The Once and Future King");
+end
+
+rule "Recommend The Crystal Cave"
+    when
+    Odpowiedz(pytanie == pytania(2) && odpowiedz == "Maybe")
+    then
+    polec(frame, kcontext.getKieRuntime(),"Mary Steward","The Crystal Cave");
+end
+
+rule "Recommend The Mists of Avalon"
+    when
+    Odpowiedz(pytanie == pytania(2) && odpowiedz == "Maybe")
+    then
+    polec(frame, kcontext.getKieRuntime(),"Marion Zimmer Bradley","The Mists of Avalon");
+end
+
+rule "Ask if modern-day setting"
+when
+Odpowiedz(pytanie == pytania(4) && odpowiedz == "No")
+then
+     ArrayList<String> warianty = new ArrayList<>();
+ 	 warianty.add("Yes");
+ 	 warianty.add("Maybe");
+ 	 warianty.add("No");
+     Odpowiedz odpowiedz = zapytaj(frame, kcontext.getKieRuntime(),pytania(6),warianty);
+     insert (odpowiedz);
+end
+
+rule "Ask whether gods"
+when
+Odpowiedz(pytanie == pytania(6) && odpowiedz == "Yes")
+then
+     ArrayList<String> warianty = new ArrayList<>();
+ 	 warianty.add("Modern Mythology");
+ 	 warianty.add("A world beneath the city");
+     Odpowiedz odpowiedz = zapytaj(frame, kcontext.getKieRuntime(),pytania(7),warianty);
+     insert (odpowiedz);
+end
+
+rule "Recommend American Gods"
+    when
+    Odpowiedz(pytanie == pytania(7) && odpowiedz == "Modern Mythology")
+    then
+    polec(frame, kcontext.getKieRuntime(),"Neil Gaiman","American Gods");
+end
+
+rule "Recommend Neverwhere"
+    when
+    Odpowiedz(pytanie == pytania(7) && odpowiedz == "A world beneath the city")
+    then
+    polec(frame, kcontext.getKieRuntime(),"Neil Gaiman","Neverwhere");
+end
+
+rule "Recommend Something Wicked This Way Comes"
+    when
+    Odpowiedz(pytanie == pytania(6) && odpowiedz == "Maybe")
+    then
+    polec(frame, kcontext.getKieRuntime(),"Ray Bradbury","Something Wicked This Way Comes");
+end
+
+rule "Ask whether western"
+when
+Odpowiedz(pytanie == pytania(6) && odpowiedz == "No")
+then
+     ArrayList<String> warianty = new ArrayList<>();
+ 	 warianty.add("Yes");
+ 	 warianty.add("No");
+     Odpowiedz odpowiedz = zapytaj(frame, kcontext.getKieRuntime(),pytania(8),warianty);
+     insert (odpowiedz);
+end
+
+rule "Recommend The Dark Tower"
+    when
+    Odpowiedz(pytanie == pytania(8) && odpowiedz == "Yes")
+    then
+    polec(frame, kcontext.getKieRuntime(),"Stephen King","The Dark Tower");
+end
+
+rule "Ask whether Animals"
+when
+Odpowiedz(pytanie == pytania(8) && odpowiedz == "No")
+then
+     ArrayList<String> warianty = new ArrayList<>();
+ 	 warianty.add("Yes");
+ 	 warianty.add("No");
+     Odpowiedz odpowiedz = zapytaj(frame, kcontext.getKieRuntime(),pytania(9),warianty);
+     insert (odpowiedz);
+end
+
+rule "Ask for ideal pet"
+when
+Odpowiedz(pytanie == pytania(9) && odpowiedz == "Yes")
+then
+     ArrayList<String> warianty = new ArrayList<>();
+ 	 warianty.add("Unicorn");
+ 	 warianty.add("Bunny");
+ 	 warianty.add("Dragon");
+     Odpowiedz odpowiedz = zapytaj(frame, kcontext.getKieRuntime(),pytania(10),warianty);
+     insert (odpowiedz);
+end
+
+rule "Recommend The Last Unicorn"
+    when
+    Odpowiedz(pytanie == pytania(10) && odpowiedz == "Unicorn")
+    then
+    polec(frame, kcontext.getKieRuntime(),"Peter S. Beagle","The Last Unicorn");
+end
+
+rule "Recommend Watership Down"
+    when
+    Odpowiedz(pytanie == pytania(10) && odpowiedz == "Bunny")
+    then
+    polec(frame, kcontext.getKieRuntime(),"Richard Adams","Watership Down");
+end
+
+rule "Recommend Dragonflight"
+    when
+    Odpowiedz(pytanie == pytania(10) && odpowiedz == "Dragon")
+    then
+    polec(frame, kcontext.getKieRuntime(),"Anna McCaffrey","Dragonflight");
+end
+
+rule "Ask whether alternate hiostory"
+when
+Odpowiedz(pytanie == pytania(9) && odpowiedz == "No")
+then
+     ArrayList<String> warianty = new ArrayList<>();
+ 	 warianty.add("Yes");
+     warianty.add("No");
+     Odpowiedz odpowiedz = zapytaj(frame, kcontext.getKieRuntime(),pytania(11),warianty);
+     insert (odpowiedz);
+end
+
+rule "Ask whether romance or magicians"
+when
+Odpowiedz(pytanie == pytania(11) && odpowiedz == "Yes")
+then
+     ArrayList<String> warianty = new ArrayList<>();
+ 	 warianty.add("Romance");
+     warianty.add("Magicians");
+     Odpowiedz odpowiedz = zapytaj(frame, kcontext.getKieRuntime(),pytania(12),warianty);
+     insert (odpowiedz);
+end
+
+rule "Recommend Kushiels Legacy"
+    when
+    Odpowiedz(pytanie == pytania(12) && odpowiedz == "Romance")
+    then
+    polec(frame, kcontext.getKieRuntime(),"Jacqueline Carey","Kushiel's Legacy Series");
+end
+
+rule "Recommend Jonathan Strange"
+    when
+    Odpowiedz(pytanie == pytania(12) && odpowiedz == "Magicians")
+    then
+    polec(frame, kcontext.getKieRuntime(),"Susanna Clarke","Jonathan Strange & Mr. Norrell");
+end
+
+rule "Ask whether ready to dive into a series"
+when
+Odpowiedz(pytanie == pytania(11) && odpowiedz == "No")
+then
+     ArrayList<String> warianty = new ArrayList<>();
+ 	 warianty.add("Yes");
+     warianty.add("Maybe");
+     warianty.add("No");
+     Odpowiedz odpowiedz = zapytaj(frame, kcontext.getKieRuntime(),pytania(13),warianty);
+     insert (odpowiedz);
+end
+
+rule "Ask whether pirates"
+when
+Odpowiedz(pytanie == pytania(13) && odpowiedz == "No")
+then
+     ArrayList<String> warianty = new ArrayList<>();
+ 	 warianty.add("Yes");
+     warianty.add("No");
+     Odpowiedz odpowiedz = zapytaj(frame, kcontext.getKieRuntime(),pytania(14),warianty);
+     insert (odpowiedz);
+end
+
+rule "Recommend Stardust"
+    when
+    Odpowiedz(pytanie == pytania(14) && odpowiedz == "No")
+    then
+    polec(frame, kcontext.getKieRuntime(),"Neil Gaiman","Stardust");
+end
+
+rule "Recommend The Princess Bride"
+    when
+    Odpowiedz(pytanie == pytania(14) && odpowiedz == "Yes")
+    then
+    polec(frame, kcontext.getKieRuntime(),"William Goldman","The Princess Bride");
+end
+
+rule "Ask about pleasure (sic!)"
+when
+Odpowiedz(pytanie == pytania(13) && odpowiedz == "Maybe")
+then
+     ArrayList<String> warianty = new ArrayList<>();
+ 	 warianty.add("Bureaucratic Satire");
+     warianty.add("Religious Satire");
+     warianty.add("Fun with Puns");
+     Odpowiedz odpowiedz = zapytaj(frame, kcontext.getKieRuntime(),pytania(15),warianty);
+     insert (odpowiedz);
+end
+
+rule "Recommend Going Postal"
+    when
+    Odpowiedz(pytanie == pytania(15) && odpowiedz == "Bureaucratic Satire")
+    then
+    polec(frame, kcontext.getKieRuntime(),"Sir Terry Pratchett","Going Postal");
+end
+
+rule "Recommend Small Gods"
+    when
+    Odpowiedz(pytanie == pytania(15) && odpowiedz == "Religious Satire")
+    then
+    polec(frame, kcontext.getKieRuntime(),"Sir Terry Pratchett","Small Gods");
+end
+
+rule "Recommend Xanth"
+    when
+    Odpowiedz(pytanie == pytania(15) && odpowiedz == "Fun with Puns")
+    then
+    polec(frame, kcontext.getKieRuntime(),"Piers Anthony","Xanth Series");
+end
+
+rule "Ask whether series has to be finished"
+when
+Odpowiedz(pytanie == pytania(13) && odpowiedz == "Yes")
+then
+     ArrayList<String> warianty = new ArrayList<>();
+ 	 warianty.add("Yes");
+     warianty.add("No");
+     Odpowiedz odpowiedz = zapytaj(frame, kcontext.getKieRuntime(),pytania(16),warianty);
+     insert (odpowiedz);
+end
+
+rule "Ask about the highness of the road"
+when
+Odpowiedz(pytanie == pytania(16) && odpowiedz == "No")
+then
+     ArrayList<String> warianty = new ArrayList<>();
+ 	 warianty.add("High Fantasy");
+     warianty.add("Low Fantasy");
+     Odpowiedz odpowiedz = zapytaj(frame, kcontext.getKieRuntime(),pytania(17),warianty);
+     insert (odpowiedz);
+end
+
+rule "Recommend A Song of Ice and Fire"
+    when
+    Odpowiedz(pytanie == pytania(17) && odpowiedz == "Low Fantasy")
+    then
+    polec(frame, kcontext.getKieRuntime(),"George R.R. Martin","A Song of Ice and Fire");
+end
+
+rule "Recommend The Way of Kings"
+    when
+    Odpowiedz(pytanie == pytania(17) && odpowiedz == "High Fantasy")
+    then
+    polec(frame, kcontext.getKieRuntime(),"Brandon Sanderson","The Way of Kings");
+end
+
+rule "Ask about sword and sorcery"
+when
+Odpowiedz(pytanie == pytania(16) && odpowiedz == "Yes")
+then
+     ArrayList<String> warianty = new ArrayList<>();
+ 	 warianty.add("Yes");
+     warianty.add("No");
+     Odpowiedz odpowiedz = zapytaj(frame, kcontext.getKieRuntime(),pytania(18),warianty);
+     insert (odpowiedz);
+end
+
+rule "Ask about old-fashioned trilogy"
+when
+Odpowiedz(pytanie == pytania(18) && odpowiedz == "No")
+then
+     ArrayList<String> warianty = new ArrayList<>();
+ 	 warianty.add("Yes");
+ 	 warianty.add("Maybe");
+     warianty.add("No");
+     Odpowiedz odpowiedz = zapytaj(frame, kcontext.getKieRuntime(),pytania(19),warianty);
+     insert (odpowiedz);
+end
+
+rule "Recommend The Chronicles of Thomas Covenant"
+    when
+    Odpowiedz(pytanie == pytania(19) && odpowiedz == "Maybe")
+    then
+    polec(frame, kcontext.getKieRuntime(),"Stephen R. Donaldson","The Chronicles of Thomas Covenant, The Unbeliever");
+end
+
+rule "Ask about topic"
+when
+Odpowiedz(pytanie == pytania(19) && odpowiedz == "Yes")
+then
+     ArrayList<String> warianty = new ArrayList<>();
+ 	 warianty.add("Thieves");
+ 	 warianty.add("MacGuffins");
+     warianty.add("Assassins");
+     warianty.add("Magicians");
+     Odpowiedz odpowiedz = zapytaj(frame, kcontext.getKieRuntime(),pytania(20),warianty);
+     insert (odpowiedz);
+end
+
+rule "Recommend The Mistborn"
+    when
+    Odpowiedz(pytanie == pytania(20) && odpowiedz == "Thieves")
+    then
+    polec(frame, kcontext.getKieRuntime(),"Brandon Sanderson","The Mistborn Trilogy");
+end
+
+rule "Recommend The Sword of Shannara"
+    when
+    Odpowiedz(pytanie == pytania(20) && odpowiedz == "MacGuffins")
+    then
+    polec(frame, kcontext.getKieRuntime(),"Terry Brooks","The Sword of Shannara Trilogy");
+end
+
+rule "Recommend The Farseer"
+    when
+    Odpowiedz(pytanie == pytania(20) && odpowiedz == "MacGuffins")
+    then
+    polec(frame, kcontext.getKieRuntime(),"Robin Hobb","The Farseer Trilogy");
+end
+
+rule "Recommend The Riftwar"
+    when
+    Odpowiedz(pytanie == pytania(20) && odpowiedz == "MacGuffins")
+    then
+    polec(frame, kcontext.getKieRuntime(),"Raymond E. Feist","The Riftwar Saga");
+end
+
+rule "Ask how many books"
+when
+Odpowiedz(pytanie == pytania(19) && odpowiedz == "No")
+then
+     ArrayList<String> warianty = new ArrayList<>();
+ 	 warianty.add("Yes");
+     warianty.add("More");
+     Odpowiedz odpowiedz = zapytaj(frame, kcontext.getKieRuntime(),pytania(21),warianty);
+     insert (odpowiedz);
+end
+
+rule "Ask about great evil"
+when
+Odpowiedz(pytanie == pytania(21) && odpowiedz == "More")
+then
+     ArrayList<String> warianty = new ArrayList<>();
+ 	 warianty.add("Yes");
+     warianty.add("No");
+     Odpowiedz odpowiedz = zapytaj(frame, kcontext.getKieRuntime(),pytania(22),warianty);
+     insert (odpowiedz);
+end
+
+rule "Ask about savior"
+when
+Odpowiedz(pytanie == pytania(22) && odpowiedz == "Yes")
+then
+     ArrayList<String> warianty = new ArrayList<>();
+ 	 warianty.add("The Seeker of Truth");
+     warianty.add("The One Power");
+     Odpowiedz odpowiedz = zapytaj(frame, kcontext.getKieRuntime(),pytania(23),warianty);
+     insert (odpowiedz);
+end
+
+rule "Recommend The Sword of Truth"
+    when
+    Odpowiedz(pytanie == pytania(23) && odpowiedz == "The Seeker of Truth")
+    then
+    polec(frame, kcontext.getKieRuntime(),"Terry Goodkind","The Sword of Truth Series");
+end
+
+rule "Recommend The Wheel of Time"
+    when
+    Odpowiedz(pytanie == pytania(23) && odpowiedz == "The One Power")
+    then
+    polec(frame, kcontext.getKieRuntime(),"Robert Jordan","The Wheel of Time");
+end
+
+rule "Ask to choose wisely"
+when
+Odpowiedz(pytanie == pytania(22) && odpowiedz == "No")
+then
+     ArrayList<String> warianty = new ArrayList<>();
+ 	 warianty.add("Earth in the Shadows");
+     warianty.add("Weaving Timeline");
+     Odpowiedz odpowiedz = zapytaj(frame, kcontext.getKieRuntime(),pytania(24),warianty);
+     insert (odpowiedz);
+end
+
+//Odpowiedz sprawdzona
+rule "Recommend Amber"
+    when
+    Odpowiedz(pytanie == pytania(24) && odpowiedz == "Earth in the Shadows")
+    then
+    polec(frame, kcontext.getKieRuntime(),"Robert Zelazny","The Chronicles of Amber");
+end
+
+rule "Recommend Malazan"
+    when
+    Odpowiedz(pytanie == pytania(24) && odpowiedz == "Weaving Timeline")
+    then
+    polec(frame, kcontext.getKieRuntime(),"Steven Erikson","The Malazan Book of the Fallen Series");
+end
+
+rule "Ask about orphans"
+when
+Odpowiedz(pytanie == pytania(21) && odpowiedz == "Yes")
+then
+     ArrayList<String> warianty = new ArrayList<>();
+     warianty.add("No");
+     Odpowiedz odpowiedz = zapytaj(frame, kcontext.getKieRuntime(),pytania(25),warianty);
+     insert (odpowiedz);
+end
+
+rule "Ask about Pokemon"
+when
+Odpowiedz(pytanie == pytania(25) && odpowiedz == "No")
+then
+     ArrayList<String> warianty = new ArrayList<>();
+     warianty.add("Yes");
+     warianty.add("No");
+     Odpowiedz odpowiedz = zapytaj(frame, kcontext.getKieRuntime(),pytania(28),warianty);
+     insert (odpowiedz);
+end
+
+rule "Recommend Codex Altera"
+    when
+    Odpowiedz(pytanie == pytania(28) && odpowiedz == "Yes")
+    then
+    polec(frame, kcontext.getKieRuntime(),"Jim Butcher","Codex Altera");
+end
+
+rule "Recommend The Belgariad"
+    when
+    Odpowiedz(pytanie == pytania(28) && odpowiedz == "No")
+    then
+    polec(frame, kcontext.getKieRuntime(),"David Eddings","The Belgariad");
+end
+
+rule "Ask whether roleplayer"
+when
+Odpowiedz(pytanie == pytania(18) && odpowiedz == "Yes")
+then
+     ArrayList<String> warianty = new ArrayList<>();
+ 	 warianty.add("Yes");
+     warianty.add("No");
+     Odpowiedz odpowiedz = zapytaj(frame, kcontext.getKieRuntime(),pytania(26),warianty);
+     insert (odpowiedz);
+end
+
+rule "Recommend The Legend of Drizzt"
+    when
+    Odpowiedz(pytanie == pytania(26) && odpowiedz == "Yes")
+    then
+    polec(frame, kcontext.getKieRuntime(),"R.A. Salvatore","The Legend of Drizzt");
+end
+
+rule "Ask whether wizards or barbarians"
+when
+Odpowiedz(pytanie == pytania(26) && odpowiedz == "No")
+then
+     ArrayList<String> warianty = new ArrayList<>();
+ 	 warianty.add("Wizards");
+     warianty.add("Barbarians");
+     Odpowiedz odpowiedz = zapytaj(frame, kcontext.getKieRuntime(),pytania(27),warianty);
+     insert (odpowiedz);
+end
+
+rule "Recommend Conan"
+    when
+    Odpowiedz(pytanie == pytania(27) && odpowiedz == "Barbarians")
+    then
+    polec(frame, kcontext.getKieRuntime(),"Robert E. Howard","The Chronicles of Conan the Barbarian");
+end
+
+rule "Recommend Elric"
+    when
+    Odpowiedz(pytanie == pytania(27) && odpowiedz == "Wizards")
+    then
+    polec(frame, kcontext.getKieRuntime(),"Michael Moorcock","The Elric Saga");
+end
+
+function String pytania(int n){
+switch(n){
+case 1: return "Are you going to be upset when you don't find Harry Potter?";
+case 2: return "Are you new to the fantasy genre?";
+case 3: return "Did you read \"The Lord Of the Rigns?\"";
+case 4: return "Do you like Arthurian legends?";
+case 5: return "Which Arthurian character do you like best?";
+case 6: return "Are you looking for modern-day settings?";
+case 7: return "Would you prefer Gods or people under the streets?";
+case 8: return "Are you a fan of Westerns?";
+case 9: return "Are animals more your thing?";
+case 10: return "What's your ideal pet?";
+case 11: return "How about some alternate history?";
+case 12: return "Romance or warring magicians?";
+case 13: return "Are you ready to dive into a series?";
+case 14: return "With pirates or without?";
+case 15: return "What's your pleasure?";
+case 16: return "Does the series have to be finished?";
+case 17: return "Take the high road or the low road";
+case 18: return "Do the words \"Sword and Sorcery\" have a positive connotation for you?";
+case 19: return "Are you looking for an old-fashioned Trilogy";
+case 20: return "What shall we read about?";
+case 21: return "So, five or six books enough for you?";
+case 22: return "Enjoy quests to prevent great evil from conquering the world?";
+case 23: return "Who will save us?";
+case 24: return "Choose wisely for this is the end";
+case 25: return "Enjoy stories about orphaned farm boys?";
+case 26: return "Are you a roleplayer?";
+case 27: return "More wizards or barbarians?";
+case 28: return "Would you like to read something based on Pokémon?";
+default: return "blad";
+}}
+
+function void polec(JFrame frame, KieRuntime krt,String autor, String ksiazka) {
+        final JPanel panel = new JPanel();
+        String koncowka = "'s ";
+        if (autor.endsWith("s")){koncowka = "' ";}
+        String text="We recommend "+autor+koncowka+ksiazka+".";
+        panel.add(new JLabel(text));
+        JOptionPane.showMessageDialog(frame, panel);
 }
+
+function Odpowiedz zapytaj(JFrame frame, KieRuntime krt,String trescPytania, ArrayList odpowiedzi) {
+
+        class Sluchacz implements ItemListener {
+                    private Odpowiedz odpowiedz;
+                    private String chosen;
+                    public Sluchacz( Odpowiedz odp, String wybrana) {
+                            this.odpowiedz = odp;
+                            this.chosen=wybrana;
+                    }
+
+                    @Override
+                    public void itemStateChanged(ItemEvent event) {
+                            if (event.getStateChange() == ItemEvent.SELECTED) {
+                                odpowiedz.setOdpowiedz(chosen);
+                            }
+                    }
+                }
+        Odpowiedz odpowiedz = new Odpowiedz(trescPytania,(String) odpowiedzi.get(0));
+
+        final JPanel panel = new JPanel();
+        panel.add(new JLabel(trescPytania));
+
+        ArrayList<JRadioButton> listaButtonow = new ArrayList<>();
+
+        for (int i=0;i<odpowiedzi.size();i++){
+                String text = (String) odpowiedzi.get(i);
+                JRadioButton nowy = new JRadioButton(text);
+                Sluchacz nowySluchacz = new Sluchacz(odpowiedz,text);
+                nowy.addItemListener(nowySluchacz);
+                listaButtonow.add(nowy);
+        }
+
+        listaButtonow.get(0).setSelected(true);
+        odpowiedz.setOdpowiedz((String) odpowiedzi.get(0));
+
+        ButtonGroup group = new ButtonGroup();
+        for (int i=0;i<listaButtonow.size();i++){
+        group.add(listaButtonow.get(i));
+        panel.add(listaButtonow.get(i));
+        }
+        JOptionPane.showMessageDialog(frame, panel);
+        return odpowiedz;
+}
+
+
