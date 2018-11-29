@@ -45,29 +45,20 @@ then
      insert (odpowiedz);
 end
 
-rule "Ask if LotR"
-when
-Odpowiedz(pytanie == pytania(2) && odpowiedz == "Yes")
-then
-     ArrayList<String> warianty = new ArrayList<>();
- 	 warianty.add("Yes");
- 	 warianty.add("No");
-     Odpowiedz odpowiedz = zapytaj(frame, kcontext.getKieRuntime(),pytania(3),warianty);
-     insert (odpowiedz);
-end
-//Odpowiedz sprawdzona
-rule "Recommend Silmarilion"
-    when
-    Odpowiedz(pytanie == pytania(3) && odpowiedz == "Yes")
-    then
-    polec(frame, kcontext.getKieRuntime(),"J.R.R. Tolkien","The Silmarillion");
-end
 //Odpowiedz sprawdzona
 rule "Recommend LotR"
     when
-    Odpowiedz(pytanie == pytania(3) && odpowiedz == "No")
+    Odpowiedz(pytanie == pytania(2) && odpowiedz == "Yes")
     then
     polec(frame, kcontext.getKieRuntime(),"J.R.R. Tolkien","The Lord of the Rings");
+end
+
+//Odpowiedz sprawdzona
+rule "Recommend Silmarilion"
+    when
+    Odpowiedz(pytanie == pytania(2) && odpowiedz == "Yes")
+    then
+    polec(frame, kcontext.getKieRuntime(),"J.R.R. Tolkien","The Silmarillion");
 end
 
 rule "Recommend Wicked"
