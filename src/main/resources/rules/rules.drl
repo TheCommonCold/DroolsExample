@@ -519,22 +519,21 @@ when
 Odpowiedz(pytanie == pytania(25) && odpowiedz == "No")
 then
      ArrayList<String> warianty = new ArrayList<>();
-     warianty.add("Yes");
-     warianty.add("No");
+     warianty.add("Oh");
      Odpowiedz odpowiedz = zapytaj(frame, kcontext.getKieRuntime(),pytania(28),warianty);
      insert (odpowiedz);
 end
 
 rule "Recommend Codex Altera"
     when
-    Odpowiedz(pytanie == pytania(28) && odpowiedz == "Yes")
+    Odpowiedz(pytanie == pytania(28) && odpowiedz == "Oh")
     then
     polec(frame, kcontext.getKieRuntime(),"Jim Butcher","Codex Altera");
 end
 
 rule "Recommend The Belgariad"
     when
-    Odpowiedz(pytanie == pytania(28) && odpowiedz == "No")
+    Odpowiedz(pytanie == pytania(28) && odpowiedz == "Oh")
     then
     polec(frame, kcontext.getKieRuntime(),"David Eddings","The Belgariad");
 end
@@ -611,7 +610,7 @@ case 24: return "Choose wisely for this is the end";
 case 25: return "Enjoy stories about orphaned farm boys?";
 case 26: return "Are you a roleplayer?";
 case 27: return "More wizards or barbarians?";
-case 28: return "Would you like to read something based on Pokémon?";
+case 28: return "Tough.";
 default: return "blad";
 }}
 
