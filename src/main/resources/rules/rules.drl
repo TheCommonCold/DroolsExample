@@ -642,7 +642,7 @@ function Odpowiedz zapytaj(JFrame frame, KieRuntime krt,String trescPytania, Arr
                 }
         Odpowiedz odpowiedz = new Odpowiedz(trescPytania,(String) odpowiedzi.get(0));
 
-        final JPanel panel = new JPanel();
+        final JPanel panel = new JPanel(new GridLayout (0,1));
         panel.add(new JLabel(trescPytania));
 
         ArrayList<JRadioButton> listaButtonow = new ArrayList<>();
