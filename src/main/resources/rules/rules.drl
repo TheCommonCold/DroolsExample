@@ -15,7 +15,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import com.sample.Odpowiedz;
-
+ 
 rule "Ask about Potter"
 	when
 	then
@@ -273,22 +273,22 @@ when
 Odpowiedz(pytanie == pytania(13) && odpowiedz == "No")
 then
      ArrayList<String> warianty = new ArrayList<>();
- 	 warianty.add("Yes");
-     warianty.add("No");
+ 	 warianty.add("Pirates, please.");
+     warianty.add("No pirates, here. No siree, Bob. No pirates at all.");
      Odpowiedz odpowiedz = zapytaj(frame, kcontext.getKieRuntime(),pytania(14),warianty);
      insert (odpowiedz);
 end
 
 rule "Recommend Stardust"
     when
-    Odpowiedz(pytanie == pytania(14) && odpowiedz == "No")
+    Odpowiedz(pytanie == pytania(14) && odpowiedz == "No pirates, here. No siree, Bob. No pirates at all.")
     then
     polec(frame, kcontext.getKieRuntime(),"Neil Gaiman","Stardust");
 end
 
 rule "Recommend The Princess Bride"
     when
-    Odpowiedz(pytanie == pytania(14) && odpowiedz == "Yes")
+    Odpowiedz(pytanie == pytania(14) && odpowiedz == "Pirates, please.")
     then
     polec(frame, kcontext.getKieRuntime(),"William Goldman","The Princess Bride");
 end
@@ -421,14 +421,14 @@ end
 
 rule "Recommend The Farseer"
     when
-    Odpowiedz(pytanie == pytania(20) && odpowiedz == "MacGuffins")
+    Odpowiedz(pytanie == pytania(20) && odpowiedz == "Assassins")
     then
     polec(frame, kcontext.getKieRuntime(),"Robin Hobb","The Farseer Trilogy");
 end
 
 rule "Recommend The Riftwar"
     when
-    Odpowiedz(pytanie == pytania(20) && odpowiedz == "MacGuffins")
+    Odpowiedz(pytanie == pytania(20) && odpowiedz == "Magicians")
     then
     polec(frame, kcontext.getKieRuntime(),"Raymond E. Feist","The Riftwar Saga");
 end
@@ -496,7 +496,7 @@ rule "Recommend Amber"
     when
     Odpowiedz(pytanie == pytania(24) && odpowiedz == "Earth in the Shadows")
     then
-    polec(frame, kcontext.getKieRuntime(),"Robert Zelazny","The Chronicles of Amber");
+    polec(frame, kcontext.getKieRuntime(),"Roger Zelazny","The Chronicles of Amber");
 end
 
 rule "Recommend Malazan"
@@ -516,7 +516,7 @@ then
      insert (odpowiedz);
 end
 
-rule "Ask about Pokemon"
+rule "Say tough"
 when
 Odpowiedz(pytanie == pytania(25) && odpowiedz == "No")
 then
@@ -530,7 +530,7 @@ rule "Recommend Codex Altera"
     when
     Odpowiedz(pytanie == pytania(28) && odpowiedz == "Oh")
     then
-    polec(frame, kcontext.getKieRuntime(),"Jim Butcher","Codex Altera");
+    polec(frame, kcontext.getKieRuntime(),"Jim Butcher","Codex Alera");
 end
 
 rule "Recommend The Belgariad"
@@ -670,6 +670,6 @@ function Odpowiedz zapytaj(JFrame frame, KieRuntime krt,String trescPytania, Arr
 		if( JOptionPane.showConfirmDialog(frame, panel, "Question", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE)<0){
 		odpowiedz.setOdpowiedz("Zakoncz program");
 		}
-
+		
         return odpowiedz;
 }
