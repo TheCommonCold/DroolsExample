@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import com.sample.Odpowiedz;
 
 rule "Ask about Potter"
 	when
@@ -24,6 +25,7 @@ rule "Ask about Potter"
     Odpowiedz odpowiedz = zapytaj(frame, kcontext.getKieRuntime(),pytania(1),warianty);
     insert (odpowiedz);
 end
+
 
 //Odpowiedz sprawdzona
 rule "Recommend Kingkiller"
@@ -100,14 +102,14 @@ end
 
 rule "Recommend The Crystal Cave"
     when
-    Odpowiedz(pytanie == pytania(2) && odpowiedz == "Maybe")
+    Odpowiedz(pytanie == pytania(5) && odpowiedz == "Merlin")
     then
     polec(frame, kcontext.getKieRuntime(),"Mary Steward","The Crystal Cave");
 end
 
 rule "Recommend The Mists of Avalon"
     when
-    Odpowiedz(pytanie == pytania(2) && odpowiedz == "Maybe")
+    Odpowiedz(pytanie == pytania(5) && odpowiedz == "Morgan Le Faye")
     then
     polec(frame, kcontext.getKieRuntime(),"Marion Zimmer Bradley","The Mists of Avalon");
 end
@@ -614,11 +616,12 @@ case 28: return "Tough.";
 default: return "blad";
 }}
 
+
 function void polec(JFrame frame, KieRuntime krt,String autor, String ksiazka) {
         final JPanel panel = new JPanel();
         String koncowka = "'s ";
         if (autor.endsWith("s")){koncowka = "' ";}
-        String text="We recommend "+autor+koncowka+ksiazka+".";
+        String text="We recommend "+autor+koncowka+"\""+ksiazka+"\".";
         panel.add(new JLabel(text));
         JOptionPane.showMessageDialog(frame, panel);
 }
@@ -663,8 +666,10 @@ function Odpowiedz zapytaj(JFrame frame, KieRuntime krt,String trescPytania, Arr
         group.add(listaButtonow.get(i));
         panel.add(listaButtonow.get(i));
         }
-        JOptionPane.showMessageDialog(frame, panel);
+        Object[] options = {"Proceed"};
+		if( JOptionPane.showConfirmDialog(frame, panel, "Question", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE)<0){
+		odpowiedz.setOdpowiedz("Zakoncz program");
+		}
+
         return odpowiedz;
 }
-
-
